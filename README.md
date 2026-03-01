@@ -1,4 +1,6 @@
 # Finance Project
+# 프론트는 전체 리팩토링 예정. 레퍼런스 하나 잡아서 그대로 구현할 예정 
+# 백엔드 프로젝트 구조, accounts에서 urls, models, serializer, views 구현함. 
 
 ---
 
