@@ -1,6 +1,5 @@
-# 첫 적금 메이트
+# Finance Project
 
-사회초년생의 첫 적금 선택을 돕는 스마트 금융 파트너
 
 ---
 
@@ -14,8 +13,8 @@
 
 ## 프로젝트 개요
 
-- **프로젝트명**: 첫 적금 메이트 JJuns
-- **설명**: 사회초년생을 타겟으로 AI 기반 예·적금 상품 추천을 제공하는 금융 서비스
+- **프로젝트명**: 주가반영 금융 의사결정 지원 웹 
+- **설명**: AI 기반 상품 동향을 검토하고 의사결정을 지원하는 금융 서비스
 - **기간**: 2025.12.19. ~ 2025.12.26.
 - **보완기간**: 2026.02.25. ~
 
@@ -23,15 +22,14 @@
 
 ### 문제 상황
 
-- 상품이 너무 많아 선택이 어려움
-- 우대조건, 가입채널, 적립방식 등 조건이 복잡
-- 개인 상황에 따라 유리한 상품이 달라 비교가 번거로움
+- 상품이 많아 선택이 어려움 : TOP 3 select 지원 
+- ROE, 거래현황, 투자성향 등 요건이 다양함. : 주요 기능  
 
 ### 타겟 사용자
 
-- 사회초년생 (첫 월급, 첫 저축)
-- 금융 용어와 상품 구조가 익숙하지 않은 사용자
-- “뭐가 좋은지 모르겠어요” 단계의 사용자
+- 국내시장 개인 투자자
+- 국내시장 외국인 투자자
+- 국내시장 기관 투자자  
 
 ---
 
@@ -49,7 +47,7 @@
 
 ![Django](https://img.shields.io/badge/Django-092E20.svg?style=for-the-badge&logo=django&logoColor=white)&nbsp;
 ![Python](https://img.shields.io/badge/Python-3776AB.svg?style=for-the-badge&logo=python&logoColor=white)&nbsp;
-![sqlite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=nodedotjs&logoColor=white)&nbsp;
+![postgresql](https://img.shields.io/badge/postgresql-4169e1?style=for-the-badge&logo=postgresql&logoColor=white)&nbsp;
 
 ### Frontend
 
@@ -69,7 +67,7 @@
 
 ---
 
-## 📁 프로젝트 폴더 구조
+## [미완] 프로젝트 폴더 구조
 
 ### Backend (Django)
 
@@ -78,10 +76,11 @@ backend
 ├─ accounts
 ├─ community
 ├─ products
+├─ mypage
 └─ project
 ```
 
-### Frontend (Vue.js)
+### Frontend (Vue)
 
 ```
 frontend
