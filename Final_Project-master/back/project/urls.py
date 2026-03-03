@@ -11,10 +11,10 @@ urlpatterns = [
     # path('api/v1/mypage/', include('mypage.urls'))
 
     # community
-    path('api/v1/community/', include('community.urls')),
+    # path('api/v1/community/', include('community.urls')),
 
     # products
-    path('api/v1/products/', include('products.urls')),
+    # path('api/v1/products/', include('products.urls')),
 
 
 ]
