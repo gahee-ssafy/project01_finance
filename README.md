@@ -6,13 +6,15 @@
 
 ## 인수인계
 
-# 3/3 전가희
+```md
+3/3 전가희
 
-## (환경) requirements.txt 통해서 가상환경 실행구조 잡음, 백엔드 이것 통해서 작업할 것.
+(환경) requirements.txt 통해서 가상환경 실행구조 잡음, 백엔드 이것 통해서 작업할 것.
 
-## (환경) docker에 DB 띄우기 - 협의후 일정 픽스
+(환경) docker에 DB 띄우기 - 협의후 일정 픽스
 
-## (환경) ai서버 열 예정, miniconda로 파이썬 버전 잡고 docker로 운영 참고만 하길.
+(환경) ai서버 열 예정, miniconda로 파이썬 버전 잡고 docker로 운영 참고만 하길.
+```
 
 ---
 
@@ -79,6 +81,7 @@
 
 ![VS code](https://img.shields.io/badge/Visual%20Studio%20Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)&nbsp;
 ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)&nbsp;
+![HuggingFace](https://img.shields.io/badge/huggingface-%23FFD21E.svg?style=for-the-badge&logo=huggingface&logoColor=white)&nbsp;
 
 <br />
 
