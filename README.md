@@ -86,32 +86,14 @@
 
 ## [미완] 프로젝트 폴더 구조
 
-### Backend (Django)
-
-```
-backend
-├─ accounts
-├─ community
-├─ products
-├─ mypage
-└─ project
-```
-
-### Frontend (Vue)
-
-```
-frontend
-├─ public
-└─ src
-    ├─ assets
-    ├─ components
-    ├─ router
-    ├─ stores
-    └─ views
-        ├─ community
-        ├─ youtube
-        └─ etc
-```
+project
+├── front/ # Vue
+├── back/ # Django
+├── ai-server/ # FastAPI + PyTorch/TensorFlow
+│ ├── main.py
+│ ├── requirements.txt
+│ └── models/ # .gitignore에 등록 ([미완]허깅페이스 링크)
+└── README.md # 전체 프로젝트 실행 가이드
 
 ---
 
