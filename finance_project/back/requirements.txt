@@ -23,3 +23,6 @@ pytz==2025.2
 certifi==2025.11.12
 charset-normalizer==3.4.4
 idna==3.11
+
+# SQL 통신 
+psycopg2-binary

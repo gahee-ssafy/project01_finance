@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # DB 서버 (PostgreSQL)
+  db:
+    image: postgres:15
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres_db # [수정] 이름/아이디/비밀번호
+      - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=postgres_password
+    ports:
+      - "5432:5432"
+
+  # App 서버 (Django)
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      # [수정] postgres://아이디:비밀번호@서비스이름:포트/DB이름
+      - DATABASE_URL=postgres://postgres_user:postgres_password@db:5432/postgres_db
+    depends_on:
+      - db
