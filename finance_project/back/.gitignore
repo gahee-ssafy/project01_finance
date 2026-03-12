@@ -1,0 +1,18 @@
+# Database & Local Data
+*.sqlite3
+db.sqlite3-journal
+
+# Migration & Environments
+venv/
+.env
+
+# Python Caches
+__pycache__/
+*.py[cod]
+
+# AI/ML Specific
+.ipynb_checkpoints/
+*.log
+
+# IDE 설정 파일 (VS Code)
+.vscode/

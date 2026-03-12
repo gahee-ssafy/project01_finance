@@ -44,25 +44,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'community',
     'products',
-    'accounts',
     'corsheaders',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 회원가입 기능
-    'rest_framework',
-    'rest_framework.authtoken',
-    'dj_rest_auth',
-    'dj_rest_auth.registration', 
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount'
-
 ]
 
 MIDDLEWARE = [
@@ -74,7 +64,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -130,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
 TIME_ZONE = 'UTC'
 
@@ -149,37 +138,13 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ... (기존 코드들) ...
+API_KEY = env('API_KEY', default='')
 
-# .env에서 가져온 키를 Django 설정 변수에 담기
-FINLIFE_API_KEY = env('FINLIFE_API_KEY', default='')  # 👈 이 줄이 없어서 에러가 난 겁니다!
-
-# CORS 설정
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
     "http://localhost:5173",
 ]
 
-# [수정] 백폴더 이식
-# "이제 기본 유저 대신 내가 만든 accounts 앱의 User 모델을 쓸 거야" 라는 뜻
-AUTH_USER_MODEL = 'accounts.User'
 
 
-REST_AUTH_REGISTER_SERIALIZERS = {
-    'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
-}
 
-REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'accounts.serializers.CustomUserDetailsSerializer',
-}
-
-
-# 커뮤니티/제품/기타 API 전부가 토큰 인증을 “기본으로” 인식
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
-    ],
-}

@@ -15,9 +15,3 @@ class DepositProductsSerializer(serializers.ModelSerializer):
     class Meta:
         model = DepositProducts
         fields = '__all__'
-
-# 2. 금/은 시세 Serializer
-class SpotPriceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SpotPrice
-        fields = '__all__'

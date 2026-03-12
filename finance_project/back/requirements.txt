@@ -8,8 +8,6 @@ tzdata==2025.3
 # --- Authentication & Authorization ---
 dj-rest-auth==7.0.1
 django-allauth==65.13.1
-# JWT 사용을 원할 경우 아래 패키지 추가가 필요할 수 있습니다.
-# djangorestframework-simplejwt==5.3.1 
 
 # --- Infrastructure & Security ---
 django-cors-headers==4.9.0
