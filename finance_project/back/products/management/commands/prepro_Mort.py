@@ -4,71 +4,63 @@ from products.models import MortgageBaseInfo
 from kiwipiepy import Kiwi
 
 class Command(BaseCommand):
-    help = '원시 데이터를 참조하여 공통점과 차별점(수치)을 모두 담은 검색 필드를 생성합니다.'
+    help = '금융 조건(LTV, 수수료, 금리) 영점을 재조정하여 전처리를 수행합니다.'
 
     kiwi = Kiwi()
-    # 금융 도메인에서 변별력이 없는 공통 노이즈 단어
     STOPWORDS = {'인지세', '채권', '매입', '근저당권', '설정', '비용', '확인', '제공', '부담', '대상', '관련'}
 
-    def extract_values(self, text):
-        """정규표현식으로 LTV와 % 수치를 정밀 타격하여 추출 (영점 조절)"""
-        if not text: return ""
-        # 1. LTV 00% 또는 00% 형태의 수치 추출
-        ltv_match = re.search(r'(LTV\s?\d{1,3}%?|\d{1,2}%(?=\s?이내))', text)
-        # 2. 0.0% 형태의 수수료율 추출
-        rate_match = re.findall(r'\d?\.?\d{1,2}%', text)
+    def extract_priority_values(self, product):
+        """[재조정] 금리체계, LTV(loan_lmt 필드), 중도상환수수료(소수점 대응) 추출"""
         
-        results = []
-        if ltv_match: results.append(ltv_match.group(0))
-        if rate_match: results.extend(rate_match)
+        # 1. 금리체계
+        rate_type = product.lend_rate_type_nm or "금리유형미비"
         
-        return " ".join(list(dict.fromkeys(results)))
+        # 2. LTV 추출 (사용자 지침에 따라 loan_lmt 필드 참조)
+        ltv_text = product.loan_lmt or ""
+        # '70%', '70%이내', 'LTV 70' 등 다양한 패턴 대응
+        ltv_match = re.search(r'(\d{1,3}%?)', ltv_text)
+        ltv_val = f"LTV{ltv_match.group(1)}" if ltv_match else "LTV정보미비"
+        
+        # 3. 중도상환수수료 추출 (소수점 패턴 대응: 0.71%, 0.95% 등)
+        fee_text = product.erly_rpay_fee or ""
+        # 숫자 + 점(.) + 숫자 + % 패턴을 모두 찾아 리스트화
+        fee_matches = re.findall(r'\d+\.?\d*%', fee_text)
+        
+        # 중복 제거 후 "수수료0.71%/0.95%" 형태로 결합
+        if fee_matches:
+            unique_fees = list(dict.fromkeys(fee_matches))
+            fee_val = f"수수료{'/'.join(unique_fees)}"
+        else:
+            fee_val = "수수료0%"
+        
+        return f"[{rate_type} {ltv_val} {fee_val}]"
 
-    def clean_context(self, text):
-        """조사 제거 및 핵심 명사 추출 (최대 10개 제한)"""
+    def clean_context(self, text, limit=10):
+        """나머지 핵심 키워드 10개 추출"""
         if not text: return ""
         res = self.kiwi.analyze(text)
-        
-        # 1. 태그 필터링 및 불용어 제거
         tokens = []
         for result, score in res:
             for token in result:
                 if token.tag in ['NNG', 'NNP', 'SL']:
                     if token.form not in self.STOPWORDS and len(token.form) > 1:
-                        tokens.append(token.form)
-        
-        # 2. 중복 제거 (순서 유지)
-        unique_tokens = []
-        for t in tokens:
-            if t not in unique_tokens:
-                unique_tokens.append(t)
-        
-        # 3. ⚠️ 핵심 영점 조절: 상위 10개 단어만 슬라이싱
-        limited_tokens = unique_tokens[:10]
-        
-        return " ".join(limited_tokens)
+                        if token.form not in tokens:
+                            tokens.append(token.form)
+        return " ".join(tokens[:limit])
 
     def handle(self, *args, **options):
-        # search_content가 비어있는 원시 데이터들을 타겟팅
         targets = MortgageBaseInfo.objects.all()
-        self.stdout.write(f"총 {targets.count()}개의 원시 데이터 참조 시작...")
+        self.stdout.write(f"영점 재조정 루틴 가동: {targets.count()}개 대상")
 
-        updated_count = 0
         for product in targets:
-            # 1. 원시 데이터 참조
-            raw_inci = product.loan_inci_expn or ""
-            raw_fee = product.erly_rpay_fee or ""
-            raw_name = product.fin_prdt_nm
+            # 1순위: 금융 조건 (영점 타격 완료)
+            priority_chunk = self.extract_priority_values(product)
             
-            # 2. 차별점 추출 (수치 영점 조절)
-            refined_values = self.extract_values(raw_inci + " " + raw_fee)
+            # 2순위: 브랜드 및 상품명
+            secondary_context = self.clean_context(f"{product.kor_co_nm} {product.fin_prdt_nm}")
             
-            # 3. 공통점 추출 (Kiwi 문맥)
-            refined_context = self.clean_context(raw_name + " " + raw_inci)
-            
-            # 4. 필드 결합 (차별점[수치]을 앞쪽에 배치하여 검색 가중치 부여)
-            product.search_content = f"[{refined_values}] {refined_context}".strip()
+            # 3순위: 데이터 결합
+            product.search_content = f"{priority_chunk} {secondary_context}".strip()
             product.save()
-            updated_count += 1
 
-        self.stdout.write(self.style.SUCCESS(f"성공적으로 {updated_count}개의 데이터 영점을 조절하여 저장했습니다."))
+        self.stdout.write(self.style.SUCCESS("수수료 소수점 및 LTV 필드 보정 완료."))
