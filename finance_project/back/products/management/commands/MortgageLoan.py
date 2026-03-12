@@ -4,55 +4,65 @@ from django.conf import settings
 from products.models import MortgageBaseInfo
 
 class Command(BaseCommand):
-    help = '금융감독원 API로부터 주택담보대출 데이터를 수집하여 통합 DB에 저장합니다.'
+    help = '금융감독원 API로부터 아파트 담보대출 데이터를 수집하고 Kiwi로 전처리하여 저장합니다.'
 
     def handle(self, *args, **options):
-        # 1. API 설정
-        api_key = settings.API_KEY 
+        # 1. API 호출 설정
+        api_key = settings.API_KEY
         url = 'http://finlife.fss.or.kr/finlifeapi/mortgageLoanProductsSearch.json'
+        
+        # 은행(020000) 권역을 기본으로 수집
         params = {
             'auth': api_key,
-            'topFinGrpNo': '020000', # 은행 권역
+            'topFinGrpNo': '020000',
             'pageNo': 1
         }
 
         # 2. 데이터 요청
         try:
-            response = requests.get(url, params=params).json()
-            res_data = response.get('result', {})
+            response = requests.get(url, params=params)
+            response.raise_for_status()
+            res_json = response.json()
+            
+            res_data = res_json.get('result', {})
             base_list = res_data.get('baseList', [])
             option_list = res_data.get('optionList', [])
+            
+            if not base_list:
+                self.stdout.write(self.style.WARNING("수집된 데이터가 없습니다."))
+                return
+
         except Exception as e:
-            self.stdout.write(self.style.ERROR(f"조회 실패: {e}"))
+            self.stdout.write(self.style.ERROR(f"API 호출 중 오류 발생: {e}"))
             return
 
-        # 3. 아파트 옵션 정보 사전 정리 (기계적 매핑)
-        # 같은 상품 코드(fin_prdt_cd)에 여러 옵션이 있을 경우 첫 번째 '아파트' 옵션만 추출
+        # 3. 아파트 담보 옵션 사전 매핑 (O(1) 조회를 위해)
         apt_options = {}
         for opt in option_list:
             if opt.get('mrtg_type_nm') == '아파트':
                 cd = opt['fin_prdt_cd']
+                # 상품당 하나의 아파트 옵션만 대표로 저장 (상환방식/금리유형 중복 시 첫 번째 것)
                 if cd not in apt_options:
                     apt_options[cd] = opt
 
-        # 4. 데이터 통합 저장
-        count = 0
+        # 4. 통합 저장 및 전처리
+        updated_count = 0
+        created_count = 0
+
         for base in base_list:
             cd = base['fin_prdt_cd']
             
-            # 아파트 옵션이 존재하는 상품만 저장
+            # 아파트 담보 옵션이 있는 경우만 진행
             if cd in apt_options:
                 opt = apt_options[cd]
                 
-                # 임베딩을 위한 기초 텍스트 조합
-                combined_text = f"{base['fin_prdt_nm']} {base.get('kor_co_nm', '')} {opt.get('lend_rate_type_nm', '')} {base.get('loan_inci_expn', '')}"
-
+                # DB 저장 또는 업데이트
                 product, created = MortgageBaseInfo.objects.update_or_create(
-                    fin_prdt_cd=cd, # 👈 유일한 식별자
+                    fin_prdt_cd=cd,
                     defaults={
                         'kor_co_nm': base['kor_co_nm'],
                         'fin_prdt_nm': base['fin_prdt_nm'],
-                        'join_way': base['join_way'],
+                        'join_way': base.get('join_way', ''),
                         'loan_inci_expn': base.get('loan_inci_expn', ''),
                         'erly_rpay_fee': base.get('erly_rpay_fee', ''),
                         'dly_rate': base.get('dly_rate', ''),
@@ -62,11 +72,6 @@ class Command(BaseCommand):
                         'lend_rate_type_nm': opt.get('lend_rate_type_nm'),
                         'lend_rate_min': opt.get('lend_rate_min'),
                         'lend_rate_max': opt.get('lend_rate_max'),
-                        'search_content': combined_text,
+                        'lend_rate_avg': opt.get('lend_rate_avg'),
                     }
                 )
-                if created:
-                    self.stdout.write(f"신규 아파트 상품 등록: {product.fin_prdt_nm}")
-                    count += 1
-
-        self.stdout.write(self.style.SUCCESS(f'총 {count}개의 아파트 담보대출 데이터 동기화 완료!'))

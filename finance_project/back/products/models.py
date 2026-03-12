@@ -15,3 +15,4 @@ class MortgageBaseInfo(models.Model):
     lend_rate_type_nm = models.CharField(max_length=100)       # 금리 유형 (예: 고정금리, 변동금리)
     lend_rate_min = models.FloatField(null=True)               # 최저 금리
     lend_rate_max = models.FloatField(null=True)               # 최고 금리
+    search_content = models.TextField(null=True, blank=True) # kiwi 전처리된 텍스트
