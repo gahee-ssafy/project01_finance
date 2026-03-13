@@ -1,0 +1,702 @@
+[
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 1,
+    "fields": {
+        "fin_prdt_cd": "1054",
+        "kor_co_nm": "우리은행",
+        "fin_prdt_nm": "우리아파트론",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "- 인지세 : 해당세액의 50%(대출금액 5천만원 이하시 없음)\n- 국민주택채권 매입 : 대출금액 × 120% × 1% × 채권할인율",
+        "erly_rpay_fee": "- 고정금리 : 중도상환대출금×0.71%×잔존기간÷대출기간\n- 변동금리 : 중도상환대출금×0.95%×잔존기간÷대출기간",
+        "dly_rate": "- 적용금리+ 3%\n(가계대출 최고연체이자율 : 12%)",
+        "loan_lmt": "LTV 70%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.18,
+        "lend_rate_max": 5.38,
+        "search_content": "[변동금리 LTV70% 수수료0.71%/0.95%] 우리은행 아파트"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 2,
+    "fields": {
+        "fin_prdt_cd": "1055",
+        "kor_co_nm": "우리은행",
+        "fin_prdt_nm": "우리부동산론",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "- 인지세 : 해당세액의 50%(대출금액 5천만원 이하시 없음)\n- 국민주택채권 매입 : 대출금액 × 120% × 1% × 채권할인율",
+        "erly_rpay_fee": "- 고정금리 : 중도상환대출금×0.71%×잔존기간÷대출기간\n- 변동금리 : 중도상환대출금×0.95%×잔존기간÷대출기간",
+        "dly_rate": "- 적용금리+ 3%\n(가계대출 최고연체이자율 : 12%)",
+        "loan_lmt": "LTV 70%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "원리금분할상환",
+        "lend_rate_type_nm": "",
+        "lend_rate_min": null,
+        "lend_rate_max": null,
+        "search_content": "[금리유형미비 LTV70% 수수료0.71%/0.95%] 우리은행 부동산"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 3,
+    "fields": {
+        "fin_prdt_cd": "SC002111SC002015",
+        "kor_co_nm": "한국스탠다드차타드은행",
+        "fin_prdt_nm": "주택담보대출",
+        "join_way": "영업점,스마트폰",
+        "loan_inci_expn": "인지세 : 해당세액의 50% (대출금액 5천만원 이하 시 없음)\n국민주택채권 매입 : 대출금액 * 110% * 1% * 채권할인율\n화재보험료 : 아파트 및 주거용 오피스텔 외 물건지에 한함",
+        "erly_rpay_fee": "조기상환원금 × 0.4% × [(3년-대출경과일수) / 3년]\n매년 대출잔액의 10% 까지 중도상환수수료 면제",
+        "dly_rate": "대출금리 + 연 3%\n(최고 연체이자율 : 연 15%)",
+        "loan_lmt": "LTV 최대 80%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.0,
+        "lend_rate_max": 5.25,
+        "search_content": "[변동금리 LTV80% 수수료0.4%/10%] 한국스탠다드차타드은행 주택 담보 대출"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 4,
+    "fields": {
+        "fin_prdt_cd": "20283770000001001",
+        "kor_co_nm": "아이엠뱅크",
+        "fin_prdt_nm": "HYBRID 모기지론(생활)",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "1.인지세:해당세액의 50%\n2.국민주택채권매입비용 : 대출금액×115%×1%×채권할인율",
+        "erly_rpay_fee": "중도상환대출금액×0.51%×(3년-대출경과일수)÷3년(일수)",
+        "dly_rate": "○ 대출이자율 + 3.0%\n○ 최고 연체이자율 : 15.0%",
+        "loan_lmt": "담보인정비율(LTV) 70%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 3.87,
+        "lend_rate_max": 4.97,
+        "search_content": "[고정금리 LTV70% 수수료0.51%] 아이 뱅크 HYBRID 모기지 생활"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 5,
+    "fields": {
+        "fin_prdt_cd": "20283770001162002",
+        "kor_co_nm": "아이엠뱅크",
+        "fin_prdt_nm": "IM주택담보대출_5년고정금리(생활)",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "1.인지세:해당세액의 50%\n2.국민주택채권매입비용 : 대출금액×115%×1%×채권할인율",
+        "erly_rpay_fee": "중도상환대출금액×0.51%×(3년-대출경과일수)÷3년(일수)",
+        "dly_rate": "○ 대출이자율 + 3.0%\n○ 최고 연체이자율 : 15.0%",
+        "loan_lmt": "담보인정비율(LTV) 70%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 4.07,
+        "lend_rate_max": 4.97,
+        "search_content": "[고정금리 LTV70% 수수료0.51%] 아이 뱅크 IM 주택 담보 대출 고정 금리 생활"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 6,
+    "fields": {
+        "fin_prdt_cd": "2028377B000001001",
+        "kor_co_nm": "아이엠뱅크",
+        "fin_prdt_nm": "장기모기지론_금융채5년변동(생활)",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "1.인지세:해당세액의 50%\n2.국민주택채권매입비용 : 대출금액×115%×1%×채권할인율",
+        "erly_rpay_fee": "중도상환대출금액×0.65%×(3년-대출경과일수)÷3년(일수)",
+        "dly_rate": "○ 대출이자율 + 3.0%\n○ 최고 연체이자율 : 15.0%",
+        "loan_lmt": "담보인정비율(LTV) 70%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.52,
+        "lend_rate_max": 5.62,
+        "search_content": "[변동금리 LTV70% 수수료0.65%] 아이 뱅크 장기 모기지 금융채 변동 생활"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 7,
+    "fields": {
+        "fin_prdt_cd": "2028377B001162002",
+        "kor_co_nm": "아이엠뱅크",
+        "fin_prdt_nm": "IM주택담보대출_금융채5년변동(생활)",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "1.인지세:해당세액의 50%\n2.국민주택채권매입비용 : 대출금액×115%×1%×채권할인율",
+        "erly_rpay_fee": "중도상환대출금액×0.65%×(3년-대출경과일수)÷3년(일수)",
+        "dly_rate": "○ 대출이자율 + 3.0%\n○ 최고 연체이자율 : 15.0%",
+        "loan_lmt": "담보인정비율(LTV) 70%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.3,
+        "lend_rate_max": 5.2,
+        "search_content": "[변동금리 LTV70% 수수료0.65%] 아이 뱅크 IM 주택 담보 대출 금융채 변동 생활"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 8,
+    "fields": {
+        "fin_prdt_cd": "20461570000001001",
+        "kor_co_nm": "아이엠뱅크",
+        "fin_prdt_nm": "HYBRID 모기지론(구입)",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "1.인지세:해당세액의 50%\n2.국민주택채권매입비용 : 대출금액×115%×1%×채권할인율",
+        "erly_rpay_fee": "중도상환대출금액×0.51%×(3년-대출경과일수)÷3년(일수)",
+        "dly_rate": "○ 대출이자율 + 3.0%\n○ 최고 연체이자율 : 15.0%",
+        "loan_lmt": "담보인정비율(LTV) 70%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 3.87,
+        "lend_rate_max": 4.97,
+        "search_content": "[고정금리 LTV70% 수수료0.51%] 아이 뱅크 HYBRID 모기지 구입"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 9,
+    "fields": {
+        "fin_prdt_cd": "20461570001162002",
+        "kor_co_nm": "아이엠뱅크",
+        "fin_prdt_nm": "IM주택담보대출_5년고정금리(구입)",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "1.인지세:해당세액의 50%\n2.국민주택채권매입비용 : 대출금액×115%×1%×채권할인율",
+        "erly_rpay_fee": "중도상환대출금액×0.51%×(3년-대출경과일수)÷3년(일수)",
+        "dly_rate": "○ 대출이자율 + 3.0%\n○ 최고 연체이자율 : 15.0%",
+        "loan_lmt": "담보인정비율(LTV) 70%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 4.07,
+        "lend_rate_max": 4.97,
+        "search_content": "[고정금리 LTV70% 수수료0.51%] 아이 뱅크 IM 주택 담보 대출 고정 금리 구입"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 10,
+    "fields": {
+        "fin_prdt_cd": "2046157B000001001",
+        "kor_co_nm": "아이엠뱅크",
+        "fin_prdt_nm": "장기모기지론_금융채5년변동(구입)",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "1.인지세:해당세액의 50%\n2.국민주택채권매입비용 : 대출금액×115%×1%×채권할인율",
+        "erly_rpay_fee": "중도상환대출금액×0.65%×(3년-대출경과일수)÷3년(일수)",
+        "dly_rate": "○ 대출이자율 + 3.0%\n○ 최고 연체이자율 : 15.0%",
+        "loan_lmt": "담보인정비율(LTV) 70%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.52,
+        "lend_rate_max": 5.62,
+        "search_content": "[변동금리 LTV70% 수수료0.65%] 아이 뱅크 장기 모기지 금융채 변동 구입"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 11,
+    "fields": {
+        "fin_prdt_cd": "2046157B001162002",
+        "kor_co_nm": "아이엠뱅크",
+        "fin_prdt_nm": "IM주택담보대출_금융채5년변동(구입)",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "1.인지세:해당세액의 50%\n2.국민주택채권매입비용 : 대출금액×115%×1%×채권할인율",
+        "erly_rpay_fee": "중도상환대출금액×0.65%×(3년-대출경과일수)÷3년(일수)",
+        "dly_rate": "○ 대출이자율 + 3.0%\n○ 최고 연체이자율 : 15.0%",
+        "loan_lmt": "담보인정비율(LTV) 70%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.3,
+        "lend_rate_max": 5.2,
+        "search_content": "[변동금리 LTV70% 수수료0.65%] 아이 뱅크 IM 주택 담보 대출 금융채 변동 구입"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 12,
+    "fields": {
+        "fin_prdt_cd": "0519",
+        "kor_co_nm": "부산은행",
+        "fin_prdt_nm": "BNK행복스케치 모기지론",
+        "join_way": "영업점,인터넷,스마트폰,모집인",
+        "loan_inci_expn": "1. 인지세 : 해당세액의 50%\n2. 국민주택채권 매입비용 : \n대출금액 X 110 ~ 120% X 1% X 채권할인율",
+        "erly_rpay_fee": "중도상환금액 X 중도상환수수료율(고정리 1.40%, 변동금리 0.66%) X (대출잔여일수 ÷ 대출기간*)\n*대출기간이 3년을 초과하는 경우 3년",
+        "dly_rate": "대출금리+3.0%\n(최고 15.0%)",
+        "loan_lmt": "지역에 따라 담보인정비율(LTV) 최대 80% 이내",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.37,
+        "lend_rate_max": 5.57,
+        "search_content": "[변동금리 LTV80% 수수료1.40%/0.66%] 부산은행 BNK 행복 스케치 모기지"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 13,
+    "fields": {
+        "fin_prdt_cd": "0599",
+        "kor_co_nm": "부산은행",
+        "fin_prdt_nm": "BNK357금리안심모기지론",
+        "join_way": "영업점,인터넷,스마트폰,모집인",
+        "loan_inci_expn": "1. 인지세 : 해당세액의 50%\n2. 국민주택채권 매입비용 : \n대출금액 X 110 ~ 120% X 1% X 채권할인율",
+        "erly_rpay_fee": "중도상환금액 X 중도상환수수료율(고정리 1.40%, 변동금리 0.66%) X (대출잔여일수 ÷ 대출기간*)\n*대출기간이 3년을 초과하는 경우 3년",
+        "dly_rate": "대출금리+3.0%\n(최고 15.0%)",
+        "loan_lmt": "지역에 따라 담보인정비율(LTV) 최대 80% 이내",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 4.52,
+        "lend_rate_max": 5.62,
+        "search_content": "[고정금리 LTV80% 수수료1.40%/0.66%] 부산은행 BNK 금리 안심 모기지"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 14,
+    "fields": {
+        "fin_prdt_cd": "0718",
+        "kor_co_nm": "부산은행",
+        "fin_prdt_nm": "BNK금리상한 모기지론",
+        "join_way": "영업점,인터넷,스마트폰,모집인",
+        "loan_inci_expn": "1. 인지세 : 해당세액의 50%\n2. 국민주택채권 매입비용 : \n대출금액 X 110 ~ 120% X 1% X 채권할인율",
+        "erly_rpay_fee": "중도상환금액 X 중도상환수수료율(고정리 1.40%, 변동금리 0.66%) X (대출잔여일수 ÷ 대출기간*)\n*대출기간이 3년을 초과하는 경우 3년",
+        "dly_rate": "대출금리+3.0%\n(최고 15.0%)",
+        "loan_lmt": "지역에 따라 담보인정비율(LTV) 최대 80% 이내",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.48,
+        "lend_rate_max": 5.58,
+        "search_content": "[변동금리 LTV80% 수수료1.40%/0.66%] 부산은행 BNK 금리 상한 모기지"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 15,
+    "fields": {
+        "fin_prdt_cd": "LN11010001301",
+        "kor_co_nm": "광주은행",
+        "fin_prdt_nm": "광주은행아파트담보대출",
+        "join_way": "영업점",
+        "loan_inci_expn": "1. 인지대 : 50%                                    2. 근저당권 설정비 중 고객 부담 항목 - 주택채권 매입비용 등",
+        "erly_rpay_fee": "중도상환금액 × 중도상환수수료율* × (대출잔여일수 ÷ 대출기간)                                                                         \n\n* 변동금리:0.48%, 고정금리 0.58%",
+        "dly_rate": "적용금리 + 3% (최고 15%)",
+        "loan_lmt": "감정가액 x 담보인정비율(LTV) 70% 이내",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 5.46,
+        "lend_rate_max": 5.66,
+        "search_content": "[고정금리 LTV70% 수수료0.48%/0.58%] 광주은행 아파트 담보 대출"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 16,
+    "fields": {
+        "fin_prdt_cd": "LN11010001732",
+        "kor_co_nm": "광주은행",
+        "fin_prdt_nm": "KJB셀렉트 주택담보대출",
+        "join_way": "영업점",
+        "loan_inci_expn": "1. 인지대 : 50%                                    2. 근저당권 설정비 중 고객 부담 항목 - 주택채권 매입비용 등",
+        "erly_rpay_fee": "중도상환금액 × 중도상환수수료율(0.48%) × (대출잔여일수 ÷ 대출기간)",
+        "dly_rate": "적용금리 + 3% (최고 15%)",
+        "loan_lmt": "감정가액 x 담보인정비율(LTV) 70% 이내",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 4.39,
+        "lend_rate_max": 5.39,
+        "search_content": "[고정금리 LTV70% 수수료0.48%] 광주은행 KJB 셀렉트 주택 담보 대출"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 17,
+    "fields": {
+        "fin_prdt_cd": "12106723",
+        "kor_co_nm": "제주은행",
+        "fin_prdt_nm": "금리safe모기지론",
+        "join_way": "영업점",
+        "loan_inci_expn": "인지세 50%\n주택채권매입비용",
+        "erly_rpay_fee": "중도상환금액×1.3%×대출잔여일수/대출기간\n3년경과시 면제",
+        "dly_rate": "적용금리+3%\n최고적용 15%",
+        "loan_lmt": "감정가의 70%이내",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 4.63,
+        "lend_rate_max": 5.63,
+        "search_content": "[고정금리 LTV70% 수수료1.3%] 제주 은행 금리 safe 모기지"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 18,
+    "fields": {
+        "fin_prdt_cd": "12107084",
+        "kor_co_nm": "제주은행",
+        "fin_prdt_nm": "제주홈대출",
+        "join_way": "영업점",
+        "loan_inci_expn": "인지세 50%\n주택채권매입비용",
+        "erly_rpay_fee": "중도상환금액×1.3%×대출잔여일수/대출기간\n3년경과시 면제",
+        "dly_rate": "적용금리+3%\n최고적용 15%",
+        "loan_lmt": "감정가의 70%이내",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.64,
+        "lend_rate_max": 5.64,
+        "search_content": "[변동금리 LTV70% 수수료1.3%] 제주은행 제주 대출"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 19,
+    "fields": {
+        "fin_prdt_cd": "12109121",
+        "kor_co_nm": "제주은행",
+        "fin_prdt_nm": "제주장기모기지론",
+        "join_way": "영업점",
+        "loan_inci_expn": "인지세 50%\n주택채권매입비용",
+        "erly_rpay_fee": "중도상환금액×1.3%×대출잔여일수/대출기간\n3년경과시 면제",
+        "dly_rate": "적용금리+3%\n최고적용 15%",
+        "loan_lmt": "감정가의 70%이내",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.64,
+        "lend_rate_max": 5.64,
+        "search_content": "[변동금리 LTV70% 수수료1.3%] 제주은행 제주 장기 모기지"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 20,
+    "fields": {
+        "fin_prdt_cd": "WR0001A",
+        "kor_co_nm": "전북은행",
+        "fin_prdt_nm": "JB해피홈론",
+        "join_way": "영업점",
+        "loan_inci_expn": "인지세:50%\n주택채권매입:대출금액×120%×1%×할인율\n화재보험료(아파트외)\n주택신보출연료(주택구입)",
+        "erly_rpay_fee": "상환금액×\n수수료율(잔여일 1년미만 0.8%, 1년초과 1.8%)×\n대출잔여일수÷대출기간(최장 3년)",
+        "dly_rate": "대출금리+3%\n(최고 연체이자율:15%)",
+        "loan_lmt": "LTV 70%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 3.39,
+        "lend_rate_max": 5.39,
+        "search_content": "[고정금리 LTV70% 수수료0.8%/1.8%] 전북은행 JB 해피"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 21,
+    "fields": {
+        "fin_prdt_cd": "WR0001B",
+        "kor_co_nm": "신한은행",
+        "fin_prdt_nm": "신한주택대출(아파트)",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "- 인지세: 해당세액의 50%(대출금액 5천만원 이하시 없음)\n- 국민주택채권매입: 대출금액*120%*1%*채권할인율",
+        "erly_rpay_fee": "-중도상환해약금:중도상환대출금*중도상환해약금률(고정금리0.59%, 변동금리0.59%)*(대출잔여일수/대출기간)",
+        "dly_rate": "-1개월이내:대출금리+3%\n-3개월이내:대출금리+3%\n-3개월초과:대출금리+3%(최고연체이자율:15%)",
+        "loan_lmt": "-LTV40%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 5.26,
+        "lend_rate_max": 6.06,
+        "search_content": "[고정금리 LTV40% 수수료0.59%] 신한은행 신한 주택 대출 아파트"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 22,
+    "fields": {
+        "fin_prdt_cd": "WR0001C",
+        "kor_co_nm": "신한은행",
+        "fin_prdt_nm": "신한주택대출",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "- 인지세: 해당세액의 50%(대출금액 5천만원 이하시 없음)\n- 국민주택채권매입: 대출금액*120%*1%*채권할인율",
+        "erly_rpay_fee": "-중도상환해약금:중도상환대출금*중도상환해약금률(고정금리0.59%, 변동금리0.59%)*(대출잔여일수/대출기간)",
+        "dly_rate": "-1개월이내:대출금리+3%\n-3개월이내:대출금리+3%\n-3개월초과:대출금리+3%(최고연체이자율:15%)",
+        "loan_lmt": "-LTV40%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 3.63,
+        "lend_rate_max": 5.63,
+        "search_content": "[고정금리 LTV40% 수수료0.59%] 신한은행 신한 주택 대출"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 23,
+    "fields": {
+        "fin_prdt_cd": "30002130",
+        "kor_co_nm": "경남은행",
+        "fin_prdt_nm": "집집마다 도움대출II",
+        "join_way": "스마트폰",
+        "loan_inci_expn": "인지세: 대출금액 구간별 해당 세액의 50%\n[대출금 5천만원 미만시 면제]\n국민주택채권매입비: 대출금 X 110% X 1% X 채권할인율\n주택신보출연료(주택자금용도)",
+        "erly_rpay_fee": "중도상환수수료(대출취급 후 3년 경과시 면제)\n = 중도상환대출금액X중도상환수수료율 X(대출잔여일수÷대출기간)\n2)중도상환수수료율 = 취급후 3년 이내 상환시 0.5%",
+        "dly_rate": "대출금리+3.0%",
+        "loan_lmt": "LTV 80% 이내",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 4.36,
+        "lend_rate_max": 6.68,
+        "search_content": "[고정금리 LTV80% 수수료0.5%] 경남은행 집집 도움 대출 II"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 24,
+    "fields": {
+        "fin_prdt_cd": "30002497",
+        "kor_co_nm": "경남은행",
+        "fin_prdt_nm": "BNK모바일주택담보대출",
+        "join_way": "스마트폰",
+        "loan_inci_expn": "인지세: 대출금액 구간별 해당 세액의 50%\n[대출금 5천만원 미만시 면제]\n국민주택채권매입비: 대출금 X 110% X 1% X 채권할인율\n주택신보출연료(주택자금용도)",
+        "erly_rpay_fee": "중도상환수수료(대출취급 후 3년 경과시 면제)\n = 중도상환대출금액X중도상환수수료율 X(대출잔여일수÷대출기간)\n2)중도상환수수료율 = 취급후 3년 이내 상환시 0.61%",
+        "dly_rate": "대출금리+3.0%",
+        "loan_lmt": "LTV 70% 이내(KB시세 확인 가능한 아파트만 가능)",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 4.1,
+        "lend_rate_max": 6.84,
+        "search_content": "[고정금리 LTV70% 수수료0.61%] 경남은행 BNK 모바일 주택 담보 대출"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 25,
+    "fields": {
+        "fin_prdt_cd": "212010144",
+        "kor_co_nm": "중소기업은행",
+        "fin_prdt_nm": "IBK주택담보대출",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "인지세 : 해당세액의 50%\n국민주택채권 매입비용 : 대출금액 x 120% x 1% x 채권할인률\n화재보험료(아파트외 물건지에 한함)",
+        "erly_rpay_fee": "중도상환금액 x 수수료율* x (대출잔여일수 ÷ 대출기간)\n  * 고정금리 0.74%, 변동금리 0.61%",
+        "dly_rate": "대출금리 + 3.0%(최고 연체이자율 : 11%)",
+        "loan_lmt": "LTV 70%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "만기일시상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.27,
+        "lend_rate_max": 4.87,
+        "search_content": "[변동금리 LTV70% 수수료0.74%/0.61%] 중소기업은행 IBK 주택 담보 대출"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 26,
+    "fields": {
+        "fin_prdt_cd": "1",
+        "kor_co_nm": "한국산업은행",
+        "fin_prdt_nm": "산은 주택대출\n(생활자금)",
+        "join_way": "기타",
+        "loan_inci_expn": "* 구입자금 취급중단, 기존 주택담보대출 고객에 대한 추가 생활자금대출만 취급\n\n- 인지세 : 해당세액의 50%\n- 국민주택채권 매입비용",
+        "erly_rpay_fee": "- 중도상환금액 × 중도상환수수료율* × (대출잔여일수 ÷ 대출기간** )\n* 담보대출 : 고정금리 1.2%, 변동금리 0.9% / 신용대출 : 고정금리 0.8%, 변동금리 0.5%\n**대출기간이 3년을 초과하는 경우 3년",
+        "dly_rate": "대출금리+3%\n최고 이자율 : 15%",
+        "loan_lmt": "- LTV 70% 등",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 4.98,
+        "lend_rate_max": 5.88,
+        "search_content": "[고정금리 LTV70% 수수료1.2%/0.9%/0.8%/0.5%] 한국산업은행 주택 대출 생활 자금"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 27,
+    "fields": {
+        "fin_prdt_cd": "KB200300000002",
+        "kor_co_nm": "국민은행",
+        "fin_prdt_nm": "KB주택담보대출변동\n(일반자금)",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "ㅇ 인지세 : 해당세액의 50%\nㅇ 국민주택채권 매입 : 대출금액 × 120% × 1% × 채권할인율\nㅇ 화재보험료 (아파트 외 물건지에 한함)",
+        "erly_rpay_fee": "중도상환금액 × 0.55% × (대출잔여일수 ÷ 3년)",
+        "dly_rate": "대출금리+3.0%\n최고연체이자율:15%",
+        "loan_lmt": "LTV 70%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "만기일시상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.33,
+        "lend_rate_max": 5.23,
+        "search_content": "[변동금리 LTV70% 수수료0.55%] 국민은행 KB 주택 담보 대출 변동 일반 자금"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 28,
+    "fields": {
+        "fin_prdt_cd": "KB200331100045",
+        "kor_co_nm": "국민은행",
+        "fin_prdt_nm": "KB스타 아파트담보대출 혼합금리(주택자금)",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "ㅇ 인지세 : 해당세액의 50%\nㅇ 국민주택채권 매입 : 대출금액 × 120% × 1% × 채권할인율\nㅇ 화재보험료 (아파트 외 물건지에 한함)",
+        "erly_rpay_fee": "중도상환금액 × 0.75% × (대출잔여일수 ÷ 3년)",
+        "dly_rate": "대출금리+3.0%\n최고연체이자율:15%",
+        "loan_lmt": "LTV 70%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 4.88,
+        "lend_rate_max": 4.88,
+        "search_content": "[고정금리 LTV70% 수수료0.75%] 국민은행 KB 스타 아파트 담보 대출 혼합 금리 주택 자금"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 29,
+    "fields": {
+        "fin_prdt_cd": "2001104780001",
+        "kor_co_nm": "농협은행주식회사",
+        "fin_prdt_nm": "NH주택담보대출",
+        "join_way": "영업점",
+        "loan_inci_expn": "1. 인지세\n  - 해당 세액의 50%\n2. 국민주택채권매입비용\n  - 근저당권 설정금액 × 10 ÷ 1,000\n3. 주택신보출연료",
+        "erly_rpay_fee": "중도상환원금 × 적용요율 × (대출기간 - 경과일수) ÷ 대출기간\n- 대출기간 : 3년을 초과하는 경우 3년\n- 적용요율 : 0.64%",
+        "dly_rate": "연체기간에 관계없이 대출금리 + 3%\n최대 연 15%",
+        "loan_lmt": "해당 주택의 담보평가금액에 따라 산출된 가능금액 이내",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 4.13,
+        "lend_rate_max": 6.73,
+        "search_content": "[고정금리 LTV정보미비 수수료0.64%] 농협은행 주식회사 NH 주택 담보 대출"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 30,
+    "fields": {
+        "fin_prdt_cd": "2001108370003",
+        "kor_co_nm": "농협은행주식회사",
+        "fin_prdt_nm": "채움고정금리모기지론",
+        "join_way": "영업점",
+        "loan_inci_expn": "1. 인지세\n  - 해당 세액의 50%\n2. 국민주택채권매입비용\n  - 근저당권 설정금액 × 10 ÷ 1,000\n3. 주택신보출연료",
+        "erly_rpay_fee": "중도상환원금 × 적용요율 × (대출기간 - 경과일수) ÷ 대출기간\n- 대출기간 : 3년을 초과하는 경우 3년\n- 적용요율 : 0.64%",
+        "dly_rate": "연체기간에 관계없이 대출금리 + 3%\n최대 연 15%",
+        "loan_lmt": "해당 주택의 담보평가금액에 따라 산출된 가능금액 이내",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 5.15,
+        "lend_rate_max": 6.85,
+        "search_content": "[고정금리 LTV정보미비 수수료0.64%] 농협은행 주식 회사 고정 금리 모기지"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 31,
+    "fields": {
+        "fin_prdt_cd": "0300386-1",
+        "kor_co_nm": "주식회사 하나은행",
+        "fin_prdt_nm": "하나원큐아파트론2",
+        "join_way": "스마트폰",
+        "loan_inci_expn": "1. 인지세 : 50%\n2. 근저당 설정비 중 고객부담 항목\n   - 주택채권매입비용 등",
+        "erly_rpay_fee": "중도상환금액 × 중도상환해약금률* × ( 대출잔여일수 ÷ 대출기간** )\n* 중도상환해약금률 : 0.65%(혼합), 0.78%(변동)\n** 대출약정일로부터 최장 3년",
+        "dly_rate": "적용금리+3% ( 최고 15% )",
+        "loan_lmt": "담보별 가용가 범위내",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.02,
+        "lend_rate_max": 5.22,
+        "search_content": "[변동금리 LTV정보미비 수수료0.65%/0.78%] 주식회사 하나은행 하나원큐 아파트"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 32,
+    "fields": {
+        "fin_prdt_cd": "01021000300000000001",
+        "kor_co_nm": "주식회사 케이뱅크",
+        "fin_prdt_nm": "아파트담보대출(일반)",
+        "join_way": "스마트폰",
+        "loan_inci_expn": "1. 인지세 - 해당세액의 50%\n2. 근저당권 설정비 중 고객 부담 항목 \n   - 주택채권 매입비용 등",
+        "erly_rpay_fee": "중도상환금액*해약금요율\n(0.58%)*(3년-대출실행 후 경과기간)/3년, \n대출 실행 3년 이후 면제",
+        "dly_rate": "적용금리+3%(최고 15%) \n단, 대출이자가 연 15% 이상일 경우\n 연체이자 연 2%를 가산",
+        "loan_lmt": "LTV 최대 70%, \n신규 - 최대 2억원, \n대환 - 최대 10억원",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "고정금리",
+        "lend_rate_min": 4.8,
+        "lend_rate_max": 4.8,
+        "search_content": "[고정금리 LTV70% 수수료0.58%] 주식회사 케이 뱅크 아파트 담보 대출 일반"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 33,
+    "fields": {
+        "fin_prdt_cd": "01021000300000000013",
+        "kor_co_nm": "주식회사 케이뱅크",
+        "fin_prdt_nm": "아파트담보대출(구입)",
+        "join_way": "스마트폰",
+        "loan_inci_expn": "1. 인지세 - 해당세액의 50%\n2. 근저당권 설정비 중 고객 부담 항목 \n   - 주택채권 매입비용 등",
+        "erly_rpay_fee": "중도상환금액*해약금요율\n(0.58%)*(3년-대출실행 후 경과기간)/3년, 대출 실행 3년 이후 면제",
+        "dly_rate": "적용금리+3%(최고 15%) \n단, 대출이자가 연 15% 이상일 경우\n 연체이자 연 2%를 가산",
+        "loan_lmt": "LTV 최대 70%, 최대 10억원",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.9,
+        "lend_rate_max": 4.9,
+        "search_content": "[변동금리 LTV70% 수수료0.58%] 주식회사 케이 뱅크 아파트 담보 대출 구입"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 34,
+    "fields": {
+        "fin_prdt_cd": "1167",
+        "kor_co_nm": "수협은행",
+        "fin_prdt_nm": "SH으뜸모기지론",
+        "join_way": "영업점,모집인",
+        "loan_inci_expn": "1. 인지세 : 해당세액의 50%\n\n2. 국민주택채권 매입비용 : 대출금액 X  120% X 1% X 채권할인율\n\n3. 화재보험료 (아파트외 물건지에 한함)",
+        "erly_rpay_fee": "중도상환금액 X 수수료율* X (대출잔여일수 / 대출기간)\n\n* 취급 후 3년 이내 0.66%",
+        "dly_rate": "대출금리+연3%",
+        "loan_lmt": "담보인정비율(LTV) 최대 70%",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "만기일시상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.67,
+        "lend_rate_max": 5.69,
+        "search_content": "[변동금리 LTV70% 수수료0.66%] 수협은행 SH 으뜸 모기지"
+    }
+},
+{
+    "model": "products.mortgagebaseinfo",
+    "pk": 35,
+    "fields": {
+        "fin_prdt_cd": "03005",
+        "kor_co_nm": "주식회사 카카오뱅크",
+        "fin_prdt_nm": "주택담보대출",
+        "join_way": "스마트폰",
+        "loan_inci_expn": "- 인지세 : 해당세액의 50%(대출금액 5천만원 이하시 없음)\n- 국민주택채권 본인부담금 : 대출금액×110%×1%×채권할인율",
+        "erly_rpay_fee": "없음",
+        "dly_rate": "대출금리+3%\n(최고 연체이자율 : 15%)",
+        "loan_lmt": "최대 10억원",
+        "mrtg_type_nm": "아파트",
+        "rpay_type_nm": "분할상환방식",
+        "lend_rate_type_nm": "변동금리",
+        "lend_rate_min": 4.51,
+        "lend_rate_max": 5.16,
+        "search_content": "[변동금리 LTV10 수수료0%] 주식회사 카카오 뱅크 주택 담보 대출"
+    }
+}
+]
