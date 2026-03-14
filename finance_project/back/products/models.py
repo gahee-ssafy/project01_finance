@@ -16,3 +16,6 @@ class MortgageBaseInfo(models.Model):
     lend_rate_max = models.FloatField(null=True)               # 최고 금리
     search_content = models.TextField(null=True, blank=True) # kiwi 전처리된 텍스트
     embedding = models.JSONField(null=True, blank=True)
+    # kiwi 전처리없이 진행
+    combined_content = models.TextField(null=True, blank=True) 
+    
