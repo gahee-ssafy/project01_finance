@@ -18,4 +18,6 @@ class MortgageBaseInfo(models.Model):
     embedding = models.JSONField(null=True, blank=True)
     # kiwi 전처리없이 진행
     combined_content = models.TextField(null=True, blank=True) 
+    combined_embedding = models.JSONField(null=True, blank=True)
+
     
