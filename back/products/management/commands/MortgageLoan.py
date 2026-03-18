@@ -1,10 +1,34 @@
+import re
 import requests
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from products.models import MortgageBaseInfo
 
 class Command(BaseCommand):
-    help = '금융감독원 API로부터 아파트 담보대출 데이터를 수집하고 Kiwi로 전처리하여 저장합니다.'
+    help = 'API 수집 중 Regex를 통해 중도상환수수료 수치를 추출하여 저장합니다.'
+
+    # 2. 전처리 기계 (Regex Parser)
+    def extract_fee_rate(self, text):
+        if not text:
+            return None
+        
+        # '면제', '없음' 등의 키워드 포착 시 0.0 반환 -> 3년이후 면세 상품이 있지만 0.0으로 처리됨
+        # 따라서 '면제'는 배제함 일괄적으로 3년 이후면 수수료 0임. 
+        if any(word in text for word in ['없음']):
+            return 0
+
+        # 패턴 설명: 숫자(정수 혹은 소수점 포함) 뒤에 %가 붙은 형태를 찾음
+        # 예: "1.2%" -> "1.2" 추출
+        match = re.search(r'(\d+\.?\d*)', text)
+        if match:
+            try:
+                return float(match.group(1))
+            except ValueError:
+                return None
+        return None
+
+
+    help = '금융감독원 API로부터 아파트 담보대출 데이터를 수집하고 저장합니다.'
 
     def handle(self, *args, **options):
         # 1. API 호출 설정
@@ -56,6 +80,10 @@ class Command(BaseCommand):
             if cd in apt_options:
                 opt = apt_options[cd]
                 
+                # [regex] 저장 직전 전처리
+                raw_fee_text = base.get('erly_rpay_fee', '')
+                fee_rate = self.extract_fee_rate(raw_fee_text)
+
                 # DB 저장 또는 업데이트
                 product, created = MortgageBaseInfo.objects.update_or_create(
                     fin_prdt_cd=cd,
@@ -64,7 +92,8 @@ class Command(BaseCommand):
                         'fin_prdt_nm': base['fin_prdt_nm'],
                         'join_way': base.get('join_way', ''),
                         'loan_inci_expn': base.get('loan_inci_expn', ''),
-                        'erly_rpay_fee': base.get('erly_rpay_fee', ''),
+                        'erly_rpay_fee': raw_fee_text,           # 원문 (UI 출력용)
+                        'erly_rpay_fee_float': fee_rate,        # 전처리된 수치 (분석용)    
                         'dly_rate': base.get('dly_rate', ''),
                         'loan_lmt': base.get('loan_lmt', ''),
                         'mrtg_type_nm': '아파트',

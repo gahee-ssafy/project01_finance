@@ -19,6 +19,8 @@ class MortgageBaseInfo(models.Model):
     # kiwi 전처리없이 진행
     combined_content = models.TextField(null=True, blank=True) 
     combined_embedding = models.JSONField(null=True, blank=True)
+    erly_rpay_fee_float = models.FloatField(null=True) # 중도상환수수료 regex 필드 
+
 
 # 개인신용대출 상품 바구니 
 class CreditLoanBaseInfo(models.Model):

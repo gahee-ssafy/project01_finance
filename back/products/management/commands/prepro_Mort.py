@@ -7,9 +7,8 @@ from sentence_transformers import SentenceTransformer
 os.environ['SSL_CERT_FILE'] = certifi.where()
 
 class Command(BaseCommand):
-    help = 'combined_content를 생성하고 임베딩을 수행합니다.'
-
     def handle(self, *args, **options):
+        help = "combined_content를 생성하고 임베딩을 수행합니다."
         # 1. 엔진 로드
         self.stdout.write("🚀 ko-sroberta 엔진 가동 중...")
         model = SentenceTransformer('jhgan/ko-sroberta-multitask')
@@ -24,7 +23,7 @@ class Command(BaseCommand):
             # [수정된 통합 로직] 수치와 조건 필드를 문맥으로 결합
             combined_text = (
                 f"금융회사명은 {product.kor_co_nm}이고, 상품명은 {product.fin_prdt_nm}입니다. "
-                f"중도상환수수료 관련 정보는: {product.erly_rpay_fee} "
+                f"중도상환수수료 관련 정보는: {product.erly_rpay_fee_float}% "
                 f"대출 한도는: {product.loan_lmt} "
                 f"금리유형은 {product.lend_rate_type_nm}로, 최저 금리는 {product.lend_rate_min}%입니다."
             )
