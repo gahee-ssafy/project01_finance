@@ -30,7 +30,7 @@ class Command(BaseCommand):
 
             # 필드 갱신 및 저장
             product.combined_content = combined_text
-            # 수치 정보가 포함된 문장을 벡터로 변환
+            # [임베딩] 수치 정보가 포함된 문장을 벡터로 변환
             product.combined_embedding = model.encode(combined_text).tolist()
             product.save()
 
