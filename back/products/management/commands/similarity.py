@@ -22,8 +22,7 @@ class Command(BaseCommand):
 
         targets = MortgageBaseInfo.objects.filter(kor_co_nm=target_bank) if target_bank else MortgageBaseInfo.objects.all()
         targets = targets.filter(combined_embedding__isnull=False)
-
-        # 2. 임베딩 및 코사인 유사도 연산
+        # 2. 임베딩 및 코사인 유사도 연산/ 768차원
         model = SentenceTransformer('jhgan/ko-sroberta-multitask')
         query_vector = model.encode(user_query)
 
