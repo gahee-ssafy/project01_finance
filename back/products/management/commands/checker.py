@@ -1,80 +1,53 @@
-import os
-import certifi  
+# app/management/commands/checker.py
 import torch
+import numpy as np
+from django.core.management.base import BaseCommand
+from models import ManualChunk
 from sentence_transformers import SentenceTransformer, util
 
-os.environ['SSL_CERT_FILE'] = certifi.where()
+class Command(BaseCommand):
+    help = '매뉴얼 기반 대출 한도 분석 (하드코딩 데이터 적용)'
 
-class LoanEligibilityChecker:
-    def __init__(self):
-        # SBERT 모델 로드 (사용자님 기보유 모델)
-        self.model = SentenceTransformer('jhgan/ko-sroberta-multitask')
+    def handle(self, *args, **options):
+        # --- [하드코딩 입력값 영역] ---
+        price = 400000000          # 주택가격: 4억 원
+        income_type = 'recognized'  # 소득종류: 인정소득
+        deposit = 200000000         # 전세보증금: 2억 원 (가정치)
+        # -----------------------------
 
-    def analyze(self, user_query, user_profile):
-        """
-        함수 내부에 규정 데이터를 포함
-        TODO: 어디 사에서 가져오느냐에 따라 값이 다를 것임. 현재는 예시로 하드코딩
-        """
-        # 1. 통합 규정
-        mortgage_rules = [
-            {
-                "description": "서울특별시 및 투기과열지구 내 아파트 담보대출 규정",
-                "ltv_ratio": 0.5,
-                "room_deduction": 55000000,
-                "region": "서울"
-            },
-            {
-                "description": "경기도 및 광역시 일반 지역 주택담보대출 규정",
-                "ltv_ratio": 0.7,
-                "room_deduction": 28000000,
-                "region": "경기/광역시"
-            },
-            {
-                "description": "기타지역 주택 구입자 대상 우대 LTV 규정",
-                "ltv_ratio": 0.7,
-                "room_deduction": 25000000,
-                "region": "기타 지역"
-            }
-        ]
+        self.stdout.write(self.style.WARNING(f"입력 데이터: 가격 {price:,}원, 소득유형 {income_type}, 보증금 {deposit:,}원\n"))
 
-        # 2. SBERT 의미론적 유사도 검색
-        rule_descriptions = [r['description'] for r in mortgage_rules]
-        rule_embeddings = self.model.encode(rule_descriptions, convert_to_tensor=True)
-        query_embedding = self.model.encode(user_query, convert_to_tensor=True)
-        
-        cos_scores = util.cos_sim(query_embedding, rule_embeddings)[0]
-        best_idx = torch.argmax(cos_scores).item()
-        matched_rule = mortgage_rules[best_idx]
+        # 1. SBERT 모델 로드 및 근거 검색 (RAG)
+        model = SentenceTransformer('jhgan/ko-sroberta-multitask')
+        search_query = f"{income_type} 소득 산정 시 LTV 담보인정비율 제한 규정"
+        query_emb = model.encode(search_query, convert_to_tensor=True)
 
-        # 3. 정량적 LTV 산술 연산
-        # 산식: (집값 * LTV비율) - 방공제
-        ltv = matched_rule['ltv_ratio']
-        deduction = matched_rule['room_deduction']
-        house_value = user_profile.get('house_price', 0)
-        
-        calculated_limit = (house_value * ltv) - deduction
-        final_limit = max(0, int(calculated_limit))
+        # 2. SQLite에서 가장 관련 있는 근거 조항 검색
+        chunks = ManualChunk.objects.all()
+        best_chunk, max_sim = None, -1.0
 
-        # 4. 분석 결과 도출
-        return {
-            "applied_rule": matched_rule['description'],
-            "confidence": f"{float(cos_scores[best_idx])*100:.2f}%",
-            "calculation_detail": {
-                "ltv": f"{int(ltv*100)}%",
-                "deduction": f"{deduction:,}원",
-                "max_loan": f"{final_limit:,}원"
-            },
-            "msg": f"은행원 모드: 분석 결과 {matched_rule['region']} 기준으로 "
-                   f"최대 {final_limit:,}원까지 대출이 가능할 것으로 예상됩니다."
-                   f"LTV {int(ltv*100)}% 적용하며, 방공제 {deduction:,}원입니다."
-                   f"또한, 생애최초인 경우는 방공제 이전 금액을 기준으로 10%p 추가 대출 가능합니다. 참고하시기 바랍니다."
-        }
-# --- 실행 테스트 ---
-if __name__ == "__main__":
-    checker = LoanEligibilityChecker()
-    # TODO: user_info: 10억 아파트 가정
-    # 해당 수치는 필수입력값
-    user_info = {"house_price": 1000000000} 
-    # result = checker.analyze("나 서울에 10억짜리 아파트 사는데 대출 한도 알려줘", user_info)
-    result = checker.analyze("진주에 아파트 살려고 대출 한도 알려줘", user_info)
-    print(result['msg'])
+        for chunk in chunks:
+            stored_emb = torch.from_numpy(np.frombuffer(chunk.embedding, dtype=np.float32))
+            sim = util.cos_sim(query_emb, stored_emb).item()
+            if sim > max_sim:
+                max_sim, best_chunk = sim, chunk
+
+        # 3. 매뉴얼 기반 논리 연산 (제7장 및 제15장 규정 참조)
+        # 인정소득 시 LTV 60% 제한 [cite: 7, 15]
+        if income_type == 'recognized':
+            ltv_ratio = 0.6  
+            rule_ref = "제7장 1. 2) (3)" [cite: 7]
+        else:
+            ltv_ratio = 0.7  
+            rule_ref = "제7장 1. 1)" [cite: 7]
+
+        # 4. 최종 한도 계산: (가격 * LTV) - 선순위 채권
+        # 보금자리론 일반 한도 3.6억 원 적용 [cite: 4]
+        calc_limit = (price * ltv_ratio) - deposit
+        final_loan_amount = max(0, min(calc_limit, 360000000)) [cite: 4]
+
+        # 5. 근거 조항 중심 리포트 출력
+        self.stdout.write(self.style.SUCCESS(f"🎯 최종 대출 가능액: {final_loan_amount:,.0)원"))
+        self.stdout.write(f"💡 판단 근거: {rule_ref} 규정에 따라 LTV {int(ltv_ratio*100)}% 적용")
+        self.stdout.write(f"📄 매뉴얼 {best_chunk.page_number}p 근거 원문:")
+        self.stdout.write(f"   \"{best_chunk.content[:200]}...\"")
