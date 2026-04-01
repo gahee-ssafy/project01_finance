@@ -21,6 +21,8 @@ FISS에서 제공을 하지 않기 때문이다.
 찾아보니, 매출액이나 기업의 규모나 산업별로도 다른 척도를 가짐을 발견했다.
 이게 개인대출은 담보가 확실하고 신용점수로 정형적인 척도를 가지는데 기업은 아니라는 인사이트를 얻었다.
 
+자세한 내용은 notion
+
 
 ```
 
@@ -60,7 +62,7 @@ FISS에서 제공을 하지 않기 때문이다.
 - **설명**: AI 기반 상품 동향을 검토하고 의사결정을 지원하는 금융 서비스
 - **기간**: 2026.02.25. ~ 2026.04.01.
 - **의문**: 기계가, 개인의 상황에 맞춰 상품을 소개할 수 있을까?
-- \*\*기계가 정보 위치는 잘 말해주지만, 필요한 정보를 추출해 내는 것에는 아직은 어려움이 있는 듯 보입니다. 아마도 학습..이 필요하지 않을까 싶습니다.
+- \*\*기계가 정보 위치는 잘 말해주지만, 필요한 정보를 추출해 내는 것에는 아직은 어려움이 있는 듯 보입니다. 아마도 학습
 
 ---
 
@@ -86,34 +88,24 @@ FISS에서 제공을 하지 않기 때문이다.
 
 ---
 
-## [미완] 프로젝트 폴더 구조
+## 프로젝트 폴더 구조
 
-# 🏗️ Project Directory Structure
-
-PROJECT_ROOT/
-├── back/ # Django Backend Root
-│ ├── manage.py # Django 실행 및 관리 스크립트
-│ ├── .gitignore # venv, **pycache**, .env 제외
-│ ├── requirements.txt # 필수 패키지 (numpy, sentence-transformers 등)
-│ ├── 01_06_260102.txt # [Source] 보금자리론 상품 매뉴얼 원본
-│ ├── data.json # [DB Dump] 적재된 코끼리 데이터 스냅샷
-│ └── products/ # 매뉴얼 관리 및 검색 App
-│ ├── models.py # ManualChunk (제목, 본문, 임베딩 필드)
-│ ├── management/
-│ │ └── commands/ # 핵심 엔진 로직 (Custom Commands)
-│ │ ├── **init**.py
-│ │ ├── prepro_manual.py # [전처리기] 코끼리 데이터 생성/적재
-│ │ ├── similarity_manual.py # [검색엔진] 사수 직답형 핀포인트 검색
-│ │ ├── manual.py # 텍스트 파싱 유틸리티
-│ │ └── checker.py # FISS API 기반 정보 검증
-│ └── migrations/ # DB 스키마 변경 이력
-└── README.md # 프로젝트 명세 및 실행 가이드
+```
+commands/
+├── MortgageLoan.py # 모기지론 관련 특화 로직
+├── prepro_Mort.py # 모기지론 데이터 전처리 전용
+├── similarity.py # 모기지론 유사도 연산 로직
+├── checker.py # 모기지론 데이터 정합성 검증 로직
+├── manual.py # 매뉴얼 파싱 및 텍스트 처리 유틸
+├── prepro_manual.py # 매뉴얼 데이터 가공 및 적재
+└── similarity_manual.py # 매뉴얼 직답형 유사도 검색 엔진
+```
 
 ---
 
 ## 데이터 분석 공정
 
-1. 데이터 수집 : 금융감독원API
+1. 데이터 수집 : 금융감독원API(FISS), 한국주택금융공사(HF)
 2. 데이터 처리 및 정제 : 통합 필드를 생성하고 임베딩
 3. 데이터 분석 : 유사도가 잘 나오나?
 4. 모델링 및 분석 : 코사인 유사도 분석
