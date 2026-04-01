@@ -1,68 +1,59 @@
 import re
-import olefile
-import zlib
 from django.core.management.base import BaseCommand
 from products.models import ManualChunk
 
 class Command(BaseCommand):
+    help = "매뉴얼 텍스트를 장(Chapter) 단위로 잘라 DB에 적재합니다."
+
     def handle(self, *args, **options):
-        file_path = r"C:\Users\rkgml\Downloads\01_06_260102.hwp"
-        self.stdout.write(self.style.WARNING("--- 디버깅 모드 가동 ---"))
+        # r-string을 유지하되 경로 확인을 한 번 더 수행하십시오.
+        file_path = r"C:\Users\rkgml\Desktop\project01_finance\back\01_06_260102.txt"
+        
+        self.stdout.write(self.style.WARNING("--- 매뉴얼 적재 프로세스 가동 ---"))
+        
         try:
-            self.run_manual_import(file_path)
+            self.ingest_manual_to_db_simple(file_path)
         except Exception as e:
-            self.stdout.write(self.style.ERROR(f"에러: {str(e)}"))
+            self.stdout.write(self.style.ERROR(f"종합 에러 발생: {str(e)}"))
 
-    def get_clean_hwp_text(self, filename):
-        f = olefile.OleFileIO(filename)
-        bodytext_dirs = [d for d in f.listdir() if "BodyText" in d[0]]
-        full_text = ""
-        for d in bodytext_dirs:
-            data = f.openstream("/".join(d)).read()
-            try:
-                unpacked_data = zlib.decompress(data, -15)
-                full_text += unpacked_data.decode('utf-16', errors='ignore')
-            except: continue
-        
-        # [디버깅 포인트] 정제 범위를 넓힘 (하이픈 필수 포함)
-        clean_text = re.sub(r'[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\s\-\(\)\[\]\%\.]', ' ', full_text)
-        return re.sub(r'\s+', ' ', clean_text).strip()
+    def ingest_manual_to_db_simple(self, file_path):  # self 인자 추가
+        # 1. 파일 읽기
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                full_text = f.read()
+        except FileNotFoundError:
+            self.stdout.write(self.style.ERROR(f"❌ 파일을 찾을 수 없습니다: {file_path}"))
+            return
 
-    def run_manual_import(self, file_path):
-        raw_text = self.get_clean_hwp_text(file_path)
-        
-        # 패턴 유연화: 하이픈 앞뒤 공백 및 다양한 형태 대응
-        # 하이픈(-) 또는 점(.)으로 둘러싸인 숫자 매칭 시도
-        page_pattern = r'[-\. ]\s?(\d+)\s?[-\. ]'
-        chapter_pattern = r'(제\s?\d+\s?장\s?[^ ]+)'
-        
-        parts = re.split(chapter_pattern, raw_text)
+        # 2. 기존 데이터 초기화 (루프 밖으로 이동)
+        # 새로운 적재를 시작하기 전에 한 번만 수행합니다.
         ManualChunk.objects.all().delete()
-        
-        current_chapter = "서론"
-        current_page = 1
-        
-        for i, part in enumerate(parts):
-            if not part.strip(): continue
-            if re.match(chapter_pattern, part):
-                current_chapter = part
+        self.stdout.write(self.style.SUCCESS("기존 매뉴얼 데이터를 초기화했습니다."))
+
+        # 3. '제 N 장' 패턴 분할 (파일 첫머리 대응을 위해 수정)
+        # 양쪽 공백 제거 후 첫 장부터 잘 자르기 위해 패턴을 유연하게 잡습니다.
+        chapter_splits = re.split(r'\n\s*(?=제\s?\d+\s?장)', full_text.strip())
+
+        count = 0
+        for section in chapter_splits:
+            section = section.strip()
+            if not section:
                 continue
 
-            # [디버깅 출력] 각 조각의 마지막 100자를 출력하여 실제 페이지 번호 형태 확인
-            debug_tail = part[-100:]
-            found_pages = re.findall(page_pattern, debug_tail)
-            
-            if found_pages:
-                current_page = int(found_pages[-1])
-                # 페이지 번호 발견 시 터미널에 보고
-                self.stdout.write(f"[{current_chapter}] 페이지 발견: {current_page}")
-            else:
-                # 못 찾았을 경우 꼬리 텍스트 노출 (원인 분석용)
-                self.stdout.write(self.style.NOTICE(f"페이지 미발견 구역 꼬리: ...{debug_tail}"))
+            # 4. 장 제목 추출
+            lines = section.split('\n')
+            chapter_title = lines[0].strip() if lines else "제목 없음"
 
+            # 5. DB 저장
             ManualChunk.objects.create(
-                content=part,
-                chapter_title=current_chapter,
-                page_number=current_page
+                content=section,
+                # embedding=None,  # 벡터화 보류 (null)
+                chapter_title=chapter_title,
+                # page_number=None
             )
-        return len(parts)
+            count += 1
+            
+            if count % 5 == 0:
+                self.stdout.write(f"적재 중... ({count}개 완료)")
+
+        self.stdout.write(self.style.SUCCESS(f"✅ 총 {count}개의 장(Chapter) 단위 원문이 DB에 성공적으로 적재되었습니다."))

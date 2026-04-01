@@ -24,13 +24,13 @@ class MortgageBaseInfo(models.Model):
 class ManualChunk(models.Model):
     # 매뉴얼 텍스트
     content = models.TextField()
-    
+
     # SBERT 모델로 생성한 고차원 벡터 (바이너리 저장)
     embedding = models.BinaryField()
     
     # 출처 및 페이지 정보 (근거 제시용)
     chapter_title = models.CharField(max_length=200, null=True)
-    page_number = models.IntegerField(null=True)
+    combined_content = models.TextField(null=True, blank=True) # 전처리된 텍스트 (선택 사항)
     
     def __str__(self):
         return f"{self.chapter_title} - {self.page_number}p"
