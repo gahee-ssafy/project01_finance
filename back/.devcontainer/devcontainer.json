@@ -1,0 +1,22 @@
+{
+  "name": "Finance AI Dev Environment",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  
+  // requirements 에서 에러
+  "postCreateCommand": "pip install --upgrade pip && pip install torch==2.2.1+cpu torchvision==0.17.1+cpu --extra-index-url https://download.pytorch.org/whl/cpu && pip install -r requirements.txt",
+
+  // VS Code 확장을 미리 설치하여 공유
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "njpwerner.autodocstring",
+        "tamasfe.even-better-toml"
+      ]
+    }
+  },
+
+  // 컨테이너 종료 후에도 유지할 작업 영역 설정
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"
+}
