@@ -4,66 +4,75 @@ import numpy as np
 from django.core.management.base import BaseCommand
 from products.models import ManualChunk
 from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 
 os.environ['SSL_CERT_FILE'] = certifi.where()
 
 class Command(BaseCommand):
-    help = '사용자 질문 의도를 파악하여 관련 매뉴얼 챕터를 정밀 검색 및 정렬합니다.'
+    help = '질문과 관련된 장을 찾아내고, 본문 내 핵심 수치와 팩트를 전수 조사하여 보고합니다.'
 
     def add_arguments(self, parser):
-        parser.add_argument('user_query', type=str, help='분석할 신입사원의 질문')
+        parser.add_argument('user_query', type=str, help='신입사원의 질문')
 
     def handle(self, *args, **options):
         user_query = options['user_query']
-        self.stdout.write(self.style.WARNING(f"🤖 [RAG 엔진 가동] 질문: {user_query}"))
+        self.stdout.write(self.style.WARNING(f"🤖 [사수 엔진 가동] DB 열람 및 팩트 추출 중..."))
 
-    # 1. 모델 로드 및 질문 벡터화
+        # 1. 모델 로드 및 질문 벡터화
         model = SentenceTransformer('jhgan/ko-sroberta-multitask')
-        query_vector = model.encode(user_query)
+        query_vector = model.encode(user_query).reshape(1, -1)
 
-        # 2. 검색 대상 필터링 (임베딩이 있는 데이터만)
+        # 2. 통합 임베딩 기반 챕터 검색
         targets = ManualChunk.objects.filter(embedding__isnull=False)
-        
         analysis_results = []
         for chunk in targets:
-            # BinaryField에서 벡터 복구
-            target_vector = np.frombuffer(chunk.embedding, dtype='float32')
-            
-            # 코사인 유사도 연산
-            similarity = np.dot(query_vector, target_vector) / (
-                np.linalg.norm(query_vector) * np.linalg.norm(target_vector)
-            )
-            
+            target_vector = np.frombuffer(chunk.embedding, dtype='float32').reshape(1, -1)
+            score = cosine_similarity(query_vector, target_vector)[0][0] * 100
             analysis_results.append({
                 'title': chunk.chapter_title,
-                'content': chunk.content[:100].replace('\n', ' ') + "...", # 요약 표시용
-                'score': float(similarity) * 100,
-                'raw_content': chunk.content
+                'raw_content': chunk.content,
+                'score': score
             })
 
-        # 3. [지능형 필터링 및 우선순위 조정]
-        # 유사도 35% 미만은 관련 없는 것으로 간주 (컷오프)
         analysis_results = [res for res in analysis_results if res['score'] >= 35]
-
-        # 특정 키워드 포함 시 가산점 부여 (예: '신혼' 언급 시 관련 챕터 상향)
-        priority_keywords = ['신혼', '생애최초', '전세사기', '한도', '중도상환']
-        for res in analysis_results:
-            if any(word in user_query and word in res['title'] for word in priority_keywords):
-                res['score'] += 10  # 키워드 매칭 시 스코어 보정 (부스팅)
-
-        # 유사도 점수 높은 순으로 정렬
         analysis_results.sort(key=lambda x: x['score'], reverse=True)
 
-        # 4. 분석 리포트 출력
-        self.stdout.write("\n📚 매뉴얼 검색 결과 보고서")
-        self.stdout.write("=" * 85)
-        self.stdout.write(f"{'순위':<4} | {'유사도':<8} | {'장 제목'}")
-        self.stdout.write("-" * 85)
-        
         if not analysis_results:
-            self.stdout.write(self.style.ERROR("검색 결과가 없습니다. 질문을 더 구체적으로 입력해 주세요."))
+            self.stdout.write(self.style.ERROR("\n❌ 관련 규정을 찾을 수 없습니다. 질문을 더 구체적으로 입력하십시오."))
+            return
+
+        # 3. [핵심 공정] 1순위 장을 열어서 팩트 문장 추출
+        best_match = analysis_results[0]
+        query_keywords = [word for word in user_query.split() if len(word) >= 2]
+        finance_units = ['%', 'LTV', 'DTI', '한도', '억원', '만원', '금리', '소득']
+
+        # 본문 분해 및 팩트 수집
+        sentences = [s.strip() for s in best_match['raw_content'].replace('\n', '.').split('.') if len(s.strip()) > 5]
+        
+        fact_box = []
+        for s in sentences:
+            if any(kw in s for kw in query_keywords) or any(unit in s for unit in finance_units):
+                if s not in fact_box:
+                    fact_box.append(s)
+
+        # 4. 결론 도출 (80% 또는 한도 관련 문장 우선 타격)
+        conclusion = ""
+        for s in fact_box:
+            # 수치 정보가 구체적으로 박힌 문장을 결론으로 채택
+            if '80' in s and '%' in s or 'LTV' in s or '한도' in s:
+                conclusion = s
+                break
+
+        # 5. 최종 사수 스타일 보고서 출력
+        self.stdout.write("\n" + "="*85)
+        
+        if conclusion:
+            # 결론이 있을 경우 직설적으로 답변
+            self.stdout.write(self.style.SUCCESS(f"🤖 [사수 직답]: 결론부터 말씀드리면, {conclusion} 입니다."))
         else:
-            for i, res in enumerate(analysis_results[:3], 1): # 상위 3개만 출력
-                self.stdout.write(f"{i:<4} | {res['score']:>6.2f}% | {res['title']}")
-                self.stdout.write(f"   ㄴ [미리보기]: {res['content']}")
-        self.stdout.write("=" * 85)
+            self.stdout.write(self.style.SUCCESS(f"🤖 [사수 직답]: 해당 장에서 질문과 관련된 구체적 수치를 확인하십시오."))
+
+        self.stdout.write("-" * 85)
+        self.stdout.write(f"📍 상세 규정은 DB 내 [{best_match['title']}]을 직접 열람하십시오.")
+        self.stdout.write(f"   (매칭 정확도: {best_match['score']:.2f}%)")
+        self.stdout.write("="*85 + "\n")
