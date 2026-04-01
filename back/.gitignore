@@ -5,6 +5,8 @@ db.sqlite3-journal
 # Migration & Environments
 venv/
 .env
+.devcontainer
+
 
 # Python Caches
 __pycache__/

@@ -39,8 +39,9 @@
 
 - **프로젝트명**: 개인대출 상품 제안
 - **설명**: AI 기반 상품 동향을 검토하고 의사결정을 지원하는 금융 서비스
-- **기간**: 2026.02.25. ~
+- **기간**: 2026.02.25. ~ 04.01.
 - **의문**: 기계가, 개인의 상황에 맞춰 상품을 소개할 수 있을까?
+- \*\*어디에 있는 지는 잘 말해주지만, 필요한 정보를 추출해 내는 것에는 아직은 어려움이 있는 듯 보입니다. 아마도 학습..이 필요하지 않을까 싶습니다.
 
 ---
 
@@ -62,19 +63,33 @@
 ![VS code](https://img.shields.io/badge/Visual%20Studio%20Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)&nbsp;
 ![HuggingFace](https://img.shields.io/badge/huggingface-%23FFD21E.svg?style=for-the-badge&logo=huggingface&logoColor=white)&nbsp;
 
-- 추가할 것: torch, '임베딩 모델: Sentence-Transformers', numpy, kiwi
   <br />
 
 ---
 
 ## [미완] 프로젝트 폴더 구조
 
-project
-├── back/ # Django
-│ ├── main.py
-│ ├── requirements.txt
-│ └── models/ # .gitignore에 등록 ([미완]허깅페이스 링크)
-└── README.md # 전체 프로젝트 실행 가이드
+PROJECT_ROOT/
+│
+├── back/ # Django Backend Root
+│ ├── manage.py # Django 실행 스크립트
+│ ├── .gitignore # 가상환경 및 불필요 파일 제외
+│ ├── requirements.txt # 의존성 패키지 (numpy, sentence-transformers 등)
+│ ├── 01_06_260102.txt # [Source] 한국주택금융공사 보금자리론 매뉴얼
+│ ├── data.json # [DB Backup] 초기 적재 데이터 및 백업
+│ │
+│ └── products/ # 핵심 비즈니스 로직 App
+│ ├── models.py # ManualChunk (chapter_title, content, embedding)
+│ ├── ... (Django 기본 파일들)
+│ │
+│ └── management/
+│ └── commands/ # 핵심 엔진 로직 (Custom Management Commands)
+│ ├── prepro_manual.py # [전처리기] 코끼리 데이터 생성 및 Context Injection 적재
+│ ├── similarity_manual.py # [검색엔진] 사수 직답형 핀포인트 검색 및 수치 추출
+│ ├── manual.py # 매뉴얼 텍스트 파싱 및 유틸리티
+│ └── checker.py # FISS API 정보 기반 데이터 정합성 검증 로직
+│
+└── README.md # 프로젝트 명세서
 
 ---
 
@@ -84,7 +99,7 @@ project
 2. 데이터 처리 및 정제 : 통합 필드를 생성하고 임베딩
 3. 데이터 분석 : 유사도가 잘 나오나?
 4. 모델링 및 분석 : 코사인 유사도 분석
-5. 시각화 :
+5. 시각화 : 터미널로 확인하고 txt 파일 열어서 내용검토로 갈음
 
 ---
 
