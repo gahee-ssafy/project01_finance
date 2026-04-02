@@ -1,78 +1,88 @@
 import os
-import certifi
+import ssl
+
+# 1. SSL 및 환경 변수 청소 (최상단 유지)
+if "SSL_CERT_FILE" in os.environ:
+    del os.environ["SSL_CERT_FILE"]
+ssl._create_default_https_context = ssl._create_unverified_context
+
+
 import numpy as np
+from google import genai
 from django.core.management.base import BaseCommand
 from products.models import ManualChunk
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
-os.environ['SSL_CERT_FILE'] = certifi.where()
+# 2. Gemini API 설정 (여기에 본인의 API 키를 넣으세요)
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 class Command(BaseCommand):
-    help = '질문과 관련된 장을 찾아내고, 본문 내 핵심 수치와 팩트를 전수 조사하여 보고합니다.'
-
-    def add_arguments(self, parser):
-        parser.add_argument('user_query', type=str, help='신입사원의 질문')
+    help = '로컬 DB 검색과 Gemini API를 결합한 퍼플렉시티형 시스템입니다.'
 
     def handle(self, *args, **options):
-        user_query = options['user_query']
-        self.stdout.write(self.style.WARNING(f"🤖 [사수 엔진 가동] DB 열람 및 팩트 추출 중..."))
-
-        # 1. 모델 로드 및 질문 벡터화
-        model = SentenceTransformer('jhgan/ko-sroberta-multitask')
-        query_vector = model.encode(user_query).reshape(1, -1)
-
-        # 2. 통합 임베딩 기반 챕터 검색
-        targets = ManualChunk.objects.filter(embedding__isnull=False)
-        analysis_results = []
-        for chunk in targets:
-            target_vector = np.frombuffer(chunk.embedding, dtype='float32').reshape(1, -1)
-            score = cosine_similarity(query_vector, target_vector)[0][0] * 100
-            analysis_results.append({
-                'title': chunk.chapter_title,
-                'raw_content': chunk.content,
-                'score': score
-            })
-
-        analysis_results = [res for res in analysis_results if res['score'] >= 35]
-        analysis_results.sort(key=lambda x: x['score'], reverse=True)
-
-        if not analysis_results:
-            self.stdout.write(self.style.ERROR("\n❌ 관련 규정을 찾을 수 없습니다. 질문을 더 구체적으로 입력하십시오."))
-            return
-
-        # 3. [핵심 공정] 1순위 장을 열어서 팩트 문장 추출
-        best_match = analysis_results[0]
-        query_keywords = [word for word in user_query.split() if len(word) >= 2]
-        finance_units = ['%', 'LTV', 'DTI', '한도', '억원', '만원', '금리', '소득']
-
-        # 본문 분해 및 팩트 수집
-        sentences = [s.strip() for s in best_match['raw_content'].replace('\n', '.').split('.') if len(s.strip()) > 5]
+        # 모델 사전 로드
+        self.stdout.write(self.style.NOTICE("⚙️  임베딩 모델 로딩 중..."))
+        embed_model = SentenceTransformer('jhgan/ko-sroberta-multitask')
         
-        fact_box = []
-        for s in sentences:
-            if any(kw in s for kw in query_keywords) or any(unit in s for unit in finance_units):
-                if s not in fact_box:
-                    fact_box.append(s)
-
-        # 4. 결론 도출 (80% 또는 한도 관련 문장 우선 타격)
-        conclusion = ""
-        for s in fact_box:
-            # 수치 정보가 구체적으로 박힌 문장을 결론으로 채택
-            if '80' in s and '%' in s or 'LTV' in s or '한도' in s:
-                conclusion = s
-                break
-
-        # 5. 최종 사수 스타일 보고서 출력
-        self.stdout.write("\n" + "="*85)
+        # Gemini 모델 준비 
+        llm = genai.GenerativeModel('gemini-3-flash-preview')
         
-        if conclusion:
-            # 결론이 있을 경우 직설적으로 답변
-            self.stdout.write(self.style.SUCCESS(f"🤖 [사수 직답]: 결론부터 말씀드리면, {conclusion} 입니다."))
-        else:
-            self.stdout.write(self.style.SUCCESS(f"🤖 [사수 직답]: 해당 장에서 질문과 관련된 구체적 수치를 확인하십시오."))
+        self.stdout.write(self.style.SUCCESS("✅ 퍼플렉시티 엔진 준비 완료. 질문을 입력하세요."))
 
-        self.stdout.write("-" * 85)
-        self.stdout.write(f"📍 상세 규정은 DB 내 [{best_match['title']}]을 직접 열람하십시오.")
-        self.stdout.write(f"   (매칭 정확도: {best_match['score']:.2f}%)")
-        self.stdout.write("="*85 + "\n")
+        while True:
+            user_query = input("\n💬 질문: ").strip()
+            if user_query.lower() in ['exit', 'quit', '종료', 'q']: break
+            if not user_query: continue
+
+            self.stdout.write(self.style.WARNING(f"🔍 로컬 DB에서 최적의 근거를 찾는 중..."))
+
+            # ... (상단 SSL 및 Gemini 설정부 동일)
+
+            # 3. 질문 벡터화 및 코사인 유사도 계산
+            query_vector = embed_model.encode(user_query).reshape(1, -1)
+            targets = ManualChunk.objects.filter(embedding__isnull=False)
+            
+            analysis_results = []
+            for chunk in targets:
+                target_vector = np.frombuffer(chunk.embedding, dtype='float32').reshape(1, -1)
+                # [수학적 근거] 1.0에 가까울수록 질문과 일치함
+                score = float(cosine_similarity(query_vector, target_vector)[0][0])
+                analysis_results.append({
+                    'title': chunk.chapter_title,
+                    'content': chunk.content,
+                    'score': score
+                })
+
+            # 유사도 기준 내림차순 정렬 후 상위 3개 추출
+            analysis_results.sort(key=lambda x: x['score'], reverse=True)
+            top_matches = [res for res in analysis_results[:3] if res['score'] >= 0.35]
+
+            if not top_matches:
+                self.stdout.write(self.style.ERROR("❌ 검색 결과가 없습니다. (유사도 0.35 미만)"))
+                continue
+
+            # 4. Gemini 지능형 답변 생성 (Top-3 컨텍스트 통합)
+            combined_context = "\n\n".join([f"[{m['title']}]: {m['content']}" for m in top_matches])
+            
+            try:
+                self.stdout.write(self.style.NOTICE("🧠 Gemini가 검색된 조항들을 통합 분석 중입니다..."))
+                prompt = f"질문: {user_query}\n\n[매뉴얼 본문]:\n{combined_context}\n\n위 본문을 근거로 50자 내로 답해."
+                response = llm.generate_content(prompt)
+                ai_answer = response.text
+            except Exception as e:
+                ai_answer = f"API 오류 발생: {str(e)}"
+
+            # 5. 최종 보고서 출력 (코사인 유사도 상세 프린트)
+            self.stdout.write("\n" + "═"*75)
+            self.stdout.write(self.style.SUCCESS(f"🤖 [사수 직답]:\n{ai_answer.strip()}"))
+            self.stdout.write("─"*75)
+            self.stdout.write(f"📊 [검색 신뢰도 보고서]")
+            
+            # 검색된 상위 결과들의 유사도를 하나씩 출력합니다.
+            for i, match in enumerate(top_matches, 1):
+                # 점수에 따라 색상을 다르게 표시하면 더 직관적입니다.
+                color_style = self.style.SUCCESS if match['score'] >= 0.6 else self.style.WARNING
+                self.stdout.write(color_style(f"   {i}순위: {match['title']} (유사도: {match['score']:.4f})"))
+            
+            self.stdout.write("═"*75 + "\n")
